@@ -15,10 +15,10 @@ namespace MonoGameInvaders
         public Player()
         {
             texture = Global.content.Load<Texture2D>("spr_ship");
-            Init();       
+            Reset();       
         }
 
-        public void Init()
+        public void Reset()
         {
             position.X = Global.width / 2; // horizontal center on screen
             position.Y = Global.height - texture.Height; // bottom of screen
@@ -35,10 +35,8 @@ namespace MonoGameInvaders
 
             position += velocity;
 
-            // If x position is out of bounds, "undo" velocity
-            if ((position.X < 100) || (position.X > Global.width - texture.Width - 100))
-                position -= velocity;
-          
+            // "clamp" the x-position to make sure it never goes out of screen bounds           
+            position.X = MathHelper.Clamp(position.X, 0, Global.width - texture.Width);
             return true;
         }
 

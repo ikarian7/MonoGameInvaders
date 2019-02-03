@@ -20,7 +20,7 @@ namespace MonoGameInvaders
         {
         }
 
-        public void Init()
+        public void Reset()
         {
         }
 
@@ -35,10 +35,6 @@ namespace MonoGameInvaders
         public void Fire(Vector2 startPosition)
         {            
         }
-
-//        public Boolean OverlapsInvader(Invader anInvader)
-//        {
-//        }
 
     }
 }
