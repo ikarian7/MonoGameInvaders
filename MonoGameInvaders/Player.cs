@@ -6,26 +6,22 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MonoGameInvaders
 {
-    class Player
-    {
+    class Player {
         public Vector2 position;
         public Vector2 velocity;
         public Texture2D texture;
       
-        public Player()
-        {
-            texture = Global.content.Load<Texture2D>("spr_ship");
-            Reset();       
+        public Player() {
+            texture = Global.content.Load<Texture2D>("sprites/spr_ship");
+            Init();       
         }
 
-        public void Reset()
-        {
-            position.X = Global.width / 2; // horizontal center on screen
+        public void Init() {
+            position.X = Global.width / 2 - texture.Width/2; // horizontal center on screen
             position.Y = Global.height - texture.Height; // bottom of screen
         }
 
-        public bool Update()
-        {
+        public bool Update() {
             // Assume player is not moving
             velocity.X = 0;
 
@@ -40,11 +36,8 @@ namespace MonoGameInvaders
             return true;
         }
 
-        public void Draw()
-        {
+        public void Draw() {
             Global.spriteBatch.Draw(texture, position, Color.White);
         }
-
-       
     }
 }

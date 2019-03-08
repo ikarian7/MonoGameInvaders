@@ -41,12 +41,19 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BlueInvader.cs" />
     <Compile Include="Bullet.cs" />
+    <Compile Include="EnemyShip.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Global.cs" />
+    <Compile Include="GreenInvader.cs" />
+    <Compile Include="Invader.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RedInvader.cs" />
+    <Compile Include="Shield.cs" />
+    <Compile Include="YellowInvader.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -56,16 +63,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\spr_background.png" />
-    <Content Include="Content\spr_blue_invader.png" />
-    <Content Include="Content\spr_bullet.png" />
-    <Content Include="Content\spr_enemy_ship.png" />
-    <Content Include="Content\spr_green_invader.png" />
-    <Content Include="Content\spr_red_invader.png" />
-    <Content Include="Content\spr_scanlines.png" />
-    <Content Include="Content\spr_shield.png" />
-    <Content Include="Content\spr_ship.png" />
-    <Content Include="Content\yellow_invader.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>

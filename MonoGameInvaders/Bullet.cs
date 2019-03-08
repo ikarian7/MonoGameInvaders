@@ -14,26 +14,38 @@ namespace MonoGameInvaders
         public Vector2 position;
         public Vector2 velocity;
         public Texture2D texture;
-        public float speed;
+        //public float speed;
 
-        public Bullet()
-        {
+        public Bullet() {
+            texture = Global.content.Load<Texture2D>("sprites/spr_bullet");
+            Init();
         }
 
-        public void Reset()
-        {
+        public void Init() {
+            isFired = false;
+            position.X = -1000;
+			velocity.Y = 0;
         }
 
-        public void Update()
-        {
+        public void Update() {
+            if(isFired) {
+                if(position.Y < 0) {
+                    Init();
+                }
+                position += velocity;
+            }
         }
 
-        public void Draw()
-        {            
+        public void Draw() {
+            Global.spriteBatch.Draw(texture, position, Color.White);
         }
 
-        public void Fire(Vector2 startPosition)
-        {            
+        public void Fire(Vector2 startPosition) {
+			if(!isFired) {
+				isFired = true;
+				this.position = startPosition;
+				velocity.Y = -3;
+			}
         }
 
     }
