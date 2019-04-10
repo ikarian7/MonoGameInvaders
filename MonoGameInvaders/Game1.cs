@@ -15,20 +15,20 @@ namespace MonoGameInvaders
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D background, scanlines;
-		SpriteFont scoreFont;
+		//SpriteFont scoreFont;
 
         Player thePlayer;
         Bullet theBullet;
 		EnemyShip theEnemyShip;
 
 		int nInvaders = 5;
-		List<Invader> invaders = new List<Invader>();
+		List<GameObject> gameObjects = new List<GameObject>();
 
 		int nShields = 4;
-		List<Shield> shields = new List<Shield>();
+		//List<Shield> shields = new List<Shield>();
 
-		int gameScore = 0;
-		Boolean canUpdateScore = false;
+		//int gameScore = 0;
+		//Boolean canUpdateScore = false;
 
         public Game1() : base() {
             graphics = new GraphicsDeviceManager(this);            
@@ -37,7 +37,7 @@ namespace MonoGameInvaders
             graphics.ApplyChanges();
 
             Content.RootDirectory = "Content";
-			scoreFont = Content.Load<SpriteFont>("fonts/score");
+			//scoreFont = Content.Load<SpriteFont>("fonts/score");
 		}
 
         /// <summary>
@@ -51,26 +51,29 @@ namespace MonoGameInvaders
             Global.GraphicsDevice = GraphicsDevice;            
             Global.content = Content;
 
-            // Create and Initialize game objects
-            thePlayer = new Player();
-            theBullet = new Bullet();
+			// Create and Initialize game objects
+			thePlayer = new Player();
+			gameObjects.Add(thePlayer);
+			theBullet = new Bullet();
+			gameObjects.Add(theBullet);
 			theEnemyShip = new EnemyShip();
+			gameObjects.Add(theEnemyShip);
 			for(int iInvader = 0; iInvader < nInvaders; iInvader++) {
 				Invader newInvader = new RedInvader();
-				invaders.Add(newInvader);
+				gameObjects.Add(newInvader);
 
 				newInvader = new YellowInvader();
-				invaders.Add(newInvader);
+				gameObjects.Add(newInvader);
 
 				newInvader = new GreenInvader();
-				invaders.Add(newInvader);
+				gameObjects.Add(newInvader);
 
 				newInvader = new BlueInvader();
-				invaders.Add(newInvader);
+				gameObjects.Add(newInvader);
 			}
 			for(int iShield = 0; iShield < nShields; iShield++) {
 				Shield newShield = new Shield(iShield);
-				shields.Add(newShield);
+				gameObjects.Add(newShield);
 			}
 			
 
@@ -106,59 +109,29 @@ namespace MonoGameInvaders
 				theBullet.Fire(thePlayer.position);
 			}
 
-            // Update the game objects
-            thePlayer.Update();
-            theBullet.Update();
-			theEnemyShip.Update();
-
-			foreach(Shield aShield in shields) {
-				if(Overlaps(aShield.position, theBullet.position, aShield.texture, theBullet.texture)) {
-					theBullet.Init();
-					aShield.Delete();
-				}
-
-				aShield.Update();
-			}
-
-			foreach(Invader anInvader in invaders) {
-				if(Overlaps(anInvader.position, theBullet.position, anInvader.texture, theBullet.texture)) {
-					theBullet.Init();
-					anInvader.Init();
-					gameScore += Global.Random(400, 600);
-				}
-
-				foreach(Shield aShield in shields) {
-					if(Overlaps(aShield.position, anInvader.position, aShield.texture, anInvader.texture)) {
-						anInvader.Init();
-						aShield.position.X = -1000;
-						gameScore -= 500;
+            //Update the game objects
+			foreach(GameObject aGameObject in gameObjects) {
+				aGameObject.Update();
+				foreach(GameObject aCollidingGameObject in gameObjects) {
+					if(Overlaps(aGameObject.position, aCollidingGameObject.position, aGameObject.texture, aCollidingGameObject.texture)) {
+						if(aGameObject is Shield && (aCollidingGameObject is Invader || aCollidingGameObject is Bullet)) {
+							aGameObject.Delete();
+							aCollidingGameObject.Init();
+						} else if(aGameObject is Bullet && (aCollidingGameObject is EnemyShip || aCollidingGameObject is Invader)) {
+							aGameObject.Init();
+							if(aCollidingGameObject is EnemyShip) {
+								aCollidingGameObject.lives--;
+								if(aCollidingGameObject.lives < 1) {
+									aCollidingGameObject.Delete();
+								}
+							} else {
+								aCollidingGameObject.Init();
+							}
+						}
 					}
 				}
-
-				if(anInvader.position.Y > Global.height - 150) {
-					gameScore -= 500;
-				}
-
-				anInvader.Update();
+				
 			}
-
-			if(Overlaps(theEnemyShip.position, theBullet.position, theEnemyShip.texture, theBullet.texture)) {
-				theEnemyShip.enemyShipLives--;
-				if(theEnemyShip.enemyShipLives < 1) {
-					theEnemyShip.position.X = -1000;
-					gameScore += 5000;
-				}
-				theBullet.Init();
-				theEnemyShip.Init();
-			}
-
-			if(canUpdateScore) {
-				gameScore++;
-				canUpdateScore = false;
-			} else {
-				canUpdateScore = true;
-			}
-
             base.Update(gameTime);
 		}
 
@@ -171,19 +144,13 @@ namespace MonoGameInvaders
             // Draw the background (and clear the screen)
             spriteBatch.Draw(background, Global.screenRect, Color.White);
 
-            // Draw the game objects
-            thePlayer.Draw();
-            theBullet.Draw();
-			theEnemyShip.Draw();
-			foreach(Invader anInvader in invaders) {
-				anInvader.Draw();
-			}
-			foreach(Shield aShield in shields) {
-				aShield.Draw();
+			// Draw the game objects
+			foreach(GameObject aGameObject in gameObjects) {
+				aGameObject.Draw();
 			}
 
 			spriteBatch.Draw(scanlines, Global.screenRect, Color.White);
-			spriteBatch.DrawString(scoreFont, gameScore.ToString(), new Vector2(Global.width - 100, 10), Color.White);
+			//spriteBatch.DrawString(scoreFont, gameScore.ToString(), new Vector2(Global.width - 100, 10), Color.White);
 
 			spriteBatch.End();
 

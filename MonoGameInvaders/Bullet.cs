@@ -6,38 +6,32 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoGameInvaders
-{
-    class Bullet
-    {
+namespace MonoGameInvaders {
+    class Bullet : GameObject {
         public Boolean isFired = false;
-        public Vector2 position;
-        public Vector2 velocity;
-        public Texture2D texture;
-        //public float speed;
 
-        public Bullet() {
-            texture = Global.content.Load<Texture2D>("sprites/spr_bullet");
-            Init();
+        public Bullet() : base("sprites/spr_bullet") {
+
         }
 
-        public void Init() {
+        public override void Init() {
+			base.Init();
+
             isFired = false;
-            position.X = -1000;
+
+			position.X = -1000;
+			position.Y = -1000;
+			velocity.X = 0;
 			velocity.Y = 0;
         }
 
-        public void Update() {
+        public override void Update() {
             if(isFired) {
                 if(position.Y < 0) {
                     Init();
                 }
                 position += velocity;
             }
-        }
-
-        public void Draw() {
-            Global.spriteBatch.Draw(texture, position, Color.White);
         }
 
         public void Fire(Vector2 startPosition) {

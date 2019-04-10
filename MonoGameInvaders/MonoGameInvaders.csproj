@@ -45,6 +45,7 @@
     <Compile Include="Bullet.cs" />
     <Compile Include="EnemyShip.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="GameObject.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="GreenInvader.cs" />
     <Compile Include="Invader.cs" />

@@ -11,9 +11,9 @@ namespace MonoGameInvaders {
 		}
 
 		public override void Init() {
-			base.Init();
 			velocity.X = 2;
 			velocity.Y = 0.3f;
+			base.Init();
 		}
 
 		public override void Update() {
@@ -25,8 +25,6 @@ namespace MonoGameInvaders {
 			} else if((position.X > Global.width - texture.Width) || (position.X < 0)) {
 				position.X -= velocity.X;
 				velocity.X *= -1;
-				//position.Y -= velocity.Y;
-				//velocity.Y *= -1;
 			}
 		}
 	}

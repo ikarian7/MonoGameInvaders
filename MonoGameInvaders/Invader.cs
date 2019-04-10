@@ -8,36 +8,23 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGameInvaders {
-	class Invader {
-		public Vector2 position;
-		public Vector2 velocity;
-		public Texture2D texture;
+	class Invader : GameObject {
+		//public int frameCounter = 0;
 
-		public Invader(String assetName) {
-			texture = Global.content.Load<Texture2D>(assetName);
-			Init();
+		public Invader(String assetName) : base(assetName) {
+			isEnemy = true;
 		}
 
-		public virtual void Init() {
+		public override void Init() {
+			base.Init();
+			lives = 1;
 			position.X = Global.Random(100, Global.width - 100);
 			position.Y = Global.Random(-100, -texture.Height - 1);
-			//position.Y = Global.Random(75, Global.height - 400);
+			//position.Y = Global.Random(75, Global.height - 400); // Om dingen met de invader direct te kunnen testen
 		}
 
-		public virtual void Update() {
-			position.X += velocity.X;
-
-			if(position.Y > Global.height) {
-				Init();
-			} else if((position.X > Global.width - texture.Width) || (position.X < 0)) {
-				position.X -= velocity.X;
-				velocity.X *= -1;
-				position.Y += velocity.Y;
-			}
-		}
-
-		public virtual void Draw() {
-			Global.spriteBatch.Draw(texture, position, Color.White);
+		public override void Update() {
+			base.Update();
 		}
 	}
 }
